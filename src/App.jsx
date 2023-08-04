@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import TodoComputed from "./TodoComputed";
@@ -5,25 +6,16 @@ import TodoCreate from "./TodoCreate";
 import TodoFilter from "./TodoFilter";
 import TodoList from "./TodoList";
 
-// const initialStateTodos = [
-//   {
-//     id: 1,
-//     title: "Go to the shop",
-//     completed: true,
-//   },
-//   {
-//     id: 2,
-//     title: "Study",
-//     completed: false,
-//   },
-//   {
-//     id: 3,
-//     title: "Go to the gym",
-//     completed: true,
-//   },
-// ];
 
 const initialStateTodos = JSON.parse(localStorage.getItem("todos")) || [];
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = [...list];
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 const App = () => {
   const [todos, setTodos] = useState(initialStateTodos);
@@ -31,6 +23,20 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+  
+  const handleDragEnd = (result) => {
+    const { destination, source } = result;
+    if (!destination) return;
+    if (
+        source.index === destination.index &&
+        source.droppableId === destination.droppableId
+    )
+        return;
+
+    setTodos((prevTasks) =>
+        reorder(prevTasks, source.index, destination.index)
+    );
+};
 
   const createTodo = (title) => {
     const newTodo = {
@@ -82,33 +88,40 @@ const App = () => {
       className="bg-[url(./assets/images/bg-mobile-light.jpg)] min-h-screen bg-contain bg-no-repeat bg-gray-100
      dark:bg-gray-900 dark:bg-[url(./assets/images/bg-mobile-dark.jpg)] md:bg-[url(./assets/images/bg-desktop-light.jpg)] md:dark:bg-[url(./assets/images/bg-desktop-dark.jpg)] transition-all duration-500"
     >
-      <Header />
+        <Header />
 
-      <main className="container mx-auto px-4 mt-8 md:max-w-xl ">
-        <TodoCreate createTodo={createTodo} />
+        <main className="container mx-auto mt-8 px-4 md:max-w-xl">
+            <TodoCreate createTodo={createTodo} />
 
-        <TodoList
-          todos={filterTodos()}
-          removeTodo={removeTodo}
-          updateTodo={updateTodo}
-        />
+            {todos.length > 0 ? (
+                <TodoList
+                    todos={filterTodos()}
+                    removeTodo={removeTodo}
+                    updateTodo={updateTodo}
+                    handleDragEnd={handleDragEnd}
+                />
+            ) : (
+                <p className="text-gray-400 py-4">EMPTY</p>
+            )}
 
-        <TodoComputed
-          computedTodo={computedTodo}
-          clearCompleted={clearCompleted}
-        />
+            <TodoComputed
+                computedItemsLeft={computedTodo}
+                clearCompleted={clearCompleted}
+            />
 
-        <TodoFilter changeFilter={changeFilter} />
-      </main>
-      {/* Footer */}
-      <footer className="text-center mt-8 dark:text-gray-400 transition-all duration-500">
-        Drag and drop to reorder list
-      </footer>
+            <TodoFilter changeFilter={changeFilter} filter={filter} />
+        </main>
+
+        <footer className="mt-8 text-center dark:text-gray-400">
+            Drag and drop to reorder list
+        </footer>
     </div>
-  );
+);
 };
 
 export default App;
+
+
 
 // Código antes de hacer modularizar
 
