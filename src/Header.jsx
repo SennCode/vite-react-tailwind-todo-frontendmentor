@@ -23,7 +23,7 @@ const Header = () => {
     <header>
       <div className="container flex justify-between mx-auto px-4 py-8 md:max-w-xl ">
         <h1 className="uppercase text-white font-semibold text-3xl tracking-[0.2em]">
-          Todo
+          my tasks
         </h1>
         <button onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? <IconSun /> : <MoonIcon />}

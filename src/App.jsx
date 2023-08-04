@@ -1,11 +1,9 @@
-
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import TodoComputed from "./TodoComputed";
 import TodoCreate from "./TodoCreate";
 import TodoFilter from "./TodoFilter";
 import TodoList from "./TodoList";
-
 
 const initialStateTodos = JSON.parse(localStorage.getItem("todos")) || [];
 
@@ -23,20 +21,20 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-  
+
   const handleDragEnd = (result) => {
     const { destination, source } = result;
     if (!destination) return;
     if (
-        source.index === destination.index &&
-        source.droppableId === destination.droppableId
+      source.index === destination.index &&
+      source.droppableId === destination.droppableId
     )
-        return;
+      return;
 
     setTodos((prevTasks) =>
-        reorder(prevTasks, source.index, destination.index)
+      reorder(prevTasks, source.index, destination.index)
     );
-};
+  };
 
   const createTodo = (title) => {
     const newTodo = {
@@ -85,43 +83,45 @@ const App = () => {
 
   return (
     <div
-      className="bg-[url(./assets/images/bg-mobile-light.jpg)] min-h-screen bg-contain bg-no-repeat bg-gray-100
-     dark:bg-gray-900 dark:bg-[url(./assets/images/bg-mobile-dark.jpg)] md:bg-[url(./assets/images/bg-desktop-light.jpg)] md:dark:bg-[url(./assets/images/bg-desktop-dark.jpg)] transition-all duration-500"
+      className="bg-[url(./assets/images/bg-lightmode-desktop.jpg)] min-h-screen bg-contain bg-no-repeat bg-gray-100
+     dark:bg-gray-900 dark:bg-[url(./assets/images/bg-lightmode-desktop.jpg)] md:bg-[url(./assets/images/bg-lightmode-desktop.jpg)] md:dark:bg-[url(./assets/images/bg-lightmode-desktop.jpg)] transition-all duration-500"
     >
-        <Header />
+      <Header />
 
-        <main className="container mx-auto mt-8 px-4 md:max-w-xl">
-            <TodoCreate createTodo={createTodo} />
+      <main className="container mx-auto mt-8 px-4 md:max-w-xl">
+        <TodoCreate createTodo={createTodo} />
 
-            {todos.length > 0 ? (
-                <TodoList
-                    todos={filterTodos()}
-                    removeTodo={removeTodo}
-                    updateTodo={updateTodo}
-                    handleDragEnd={handleDragEnd}
-                />
-            ) : (
-                <p className="text-gray-400 py-4">EMPTY</p>
-            )}
+        {todos.length > 0 ? (
+          <TodoList
+            todos={filterTodos()}
+            removeTodo={removeTodo}
+            updateTodo={updateTodo}
+            handleDragEnd={handleDragEnd}
+          />
+        ) : (
+          <p className="text-gray-400 py-4 text-center">
+            <span className="bg-white rounded-md overflow-hidden py-4 flex gap-4 items-center px-4 dark:bg-gray-800 transition-all duration-500 text-red-200">
+              No tasks added yet...
+            </span>
+          </p>
+        )}
 
-            <TodoComputed
-                computedItemsLeft={computedTodo}
-                clearCompleted={clearCompleted}
-            />
+        <TodoComputed
+          computedItemsLeft={computedTodo}
+          clearCompleted={clearCompleted}
+        />
 
-            <TodoFilter changeFilter={changeFilter} filter={filter} />
-        </main>
+        <TodoFilter changeFilter={changeFilter} filter={filter} />
+      </main>
 
-        <footer className="mt-8 text-center dark:text-gray-400">
-            Drag and drop to reorder list
-        </footer>
+      <footer className="mt-8 text-center dark:text-gray-400 font-semibold">
+        Drag and drop to reorder list
+      </footer>
     </div>
-);
+  );
 };
 
 export default App;
-
-
 
 // Código antes de hacer modularizar
 

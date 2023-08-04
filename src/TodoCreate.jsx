@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const TodoCreate = ({ createTodo }) => {
   const [title, setTitle] = useState("");
@@ -7,8 +8,20 @@ const TodoCreate = ({ createTodo }) => {
     e.preventDefault();
     console.log(title);
     if (!title.trim()) {
-      return setTitle("");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debes ingresar una tarea nueva.',
+      });
+      return setTitle("")
     }
+    Swal.fire({
+      position: 'top-center',
+      icon: 'success',
+      title: `Tarea "${title.toUpperCase()}" creada correctamente`,
+      showConfirmButton: false,
+      timer: 1500
+    })
     createTodo(title);
     setTitle("");
   };
@@ -23,7 +36,7 @@ const TodoCreate = ({ createTodo }) => {
         name="title"
         value={title}
         type="text"
-        placeholder="Create a new todo..."
+        placeholder="Create a new task..."
         className="w-full text-gray-400 outline-none dark:bg-gray-800 transition-all duration-500"
         onChange={(e) => setTitle(e.target.value)}
       />
