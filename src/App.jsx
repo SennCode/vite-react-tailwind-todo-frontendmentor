@@ -79,8 +79,8 @@ const App = () => {
 
   return (
     <div
-      className="bg-[url(src/assets/images/bg-mobile-light.jpg)] min-h-screen bg-contain bg-no-repeat bg-gray-100
-     dark:bg-gray-900 dark:bg-[url(src/assets/images/bg-mobile-dark.jpg)] md:bg-[url(src/assets/images/bg-desktop-light.jpg)] md:dark:bg-[url(src/assets/images/bg-desktop-dark.jpg)] transition-all duration-500"
+      className="bg-[url(./assets/images/bg-mobile-light.jpg)] min-h-screen bg-contain bg-no-repeat bg-gray-100
+     dark:bg-gray-900 dark:bg-[url(./assets/images/bg-mobile-dark.jpg)] md:bg-[url(./assets/images/bg-desktop-light.jpg)] md:dark:bg-[url(./assets/images/bg-desktop-dark.jpg)] transition-all duration-500"
     >
       <Header />
 
